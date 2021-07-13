@@ -1,6 +1,8 @@
 {
     "devDependencies": {
         "@symfony/webpack-encore": "^0.26.0",
+        "bootstrap": "^5.0.2",
+        "encore": "^0.0.30-beta",
         "vue": "^2.6.8",
         "vue-loader": "^15.7.0",
         "vue-template-compiler": "^2.6.8",
