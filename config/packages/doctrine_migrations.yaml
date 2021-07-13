@@ -1,0 +1,6 @@
+doctrine_migrations:
+    migrations_paths:
+        'App\Migrations': 'src/Migrations'
+    storage:
+        table_storage:
+            table_name: 'cr_migration_versions'

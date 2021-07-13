@@ -1,0 +1,3 @@
+phpcs:
+    script:
+        - phpcs -n --colors --standard=Symfony ./src/
