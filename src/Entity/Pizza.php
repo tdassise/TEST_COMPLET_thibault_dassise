@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -30,6 +30,8 @@ class Pizza
 
     /**
      * @var Collection
+     * @ORM\OneToMany(targetEntity="App\Entity\IngredientPizza", mappedBy="quantiteIngredients")
+     * @ORM\JoinColumn(nullable=false)
      */
     private Collection $quantiteIngredients;
 

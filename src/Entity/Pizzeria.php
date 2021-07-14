@@ -43,11 +43,18 @@ class Pizzeria
 
     /**
      * @var Collection
+     * @ORM\ManyToMany(targetEntity="App\Entity\Pizza")
+     * @ORM\JoinColumn(nullable=false)
      */
     private Collection $pizzas;
 
     /**
      * @var Collection
+     * @ORM\OneToMany(
+     *      targetEntity="App\Entity\Pizzaiolo",
+     *      mappedBy="employeur"
+     * )
+     * @ORM\JoinColumn(nullable=true)
      */
     private Collection $pizzaiolos;
 
