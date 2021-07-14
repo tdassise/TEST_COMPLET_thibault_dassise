@@ -1,0 +1,41 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Migrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20210714161510 extends AbstractMigration
+{
+    public function getDescription(): string
+    {
+        return '';
+    }
+
+    public function up(Schema $schema): void
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE pizza_ingredient_pizza DROP INDEX IDX_B95AF636A61B4DCC, ADD UNIQUE INDEX UNIQ_B95AF636A61B4DCC (ingredient_pizza_id)');
+        $this->addSql('ALTER TABLE pizza_ingredient_pizza ADD CONSTRAINT FK_B95AF636D41D1D42 FOREIGN KEY (pizza_id) REFERENCES pizza (id_pizza)');
+        $this->addSql('ALTER TABLE pizza_ingredient_pizza ADD CONSTRAINT FK_B95AF636A61B4DCC FOREIGN KEY (ingredient_pizza_id) REFERENCES nombre_ingredient_par_pizza (id_ingredient_pizza)');
+        $this->addSql('ALTER TABLE pizzeria_pizza DROP INDEX IDX_9F9B6E20D41D1D42, ADD UNIQUE INDEX UNIQ_9F9B6E20D41D1D42 (pizza_id)');
+        $this->addSql('ALTER TABLE pizzeria_pizza ADD CONSTRAINT FK_9F9B6E20F1965E46 FOREIGN KEY (pizzeria_id) REFERENCES pizzeria (id_pizzeria)');
+        $this->addSql('ALTER TABLE pizzeria_pizza ADD CONSTRAINT FK_9F9B6E20D41D1D42 FOREIGN KEY (pizza_id) REFERENCES pizza (id_pizza)');
+    }
+
+    public function down(Schema $schema): void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE pizza_ingredient_pizza DROP INDEX UNIQ_B95AF636A61B4DCC, ADD INDEX IDX_B95AF636A61B4DCC (ingredient_pizza_id)');
+        $this->addSql('ALTER TABLE pizza_ingredient_pizza DROP FOREIGN KEY FK_B95AF636D41D1D42');
+        $this->addSql('ALTER TABLE pizza_ingredient_pizza DROP FOREIGN KEY FK_B95AF636A61B4DCC');
+        $this->addSql('ALTER TABLE pizzeria_pizza DROP INDEX UNIQ_9F9B6E20D41D1D42, ADD INDEX IDX_9F9B6E20D41D1D42 (pizza_id)');
+        $this->addSql('ALTER TABLE pizzeria_pizza DROP FOREIGN KEY FK_9F9B6E20F1965E46');
+        $this->addSql('ALTER TABLE pizzeria_pizza DROP FOREIGN KEY FK_9F9B6E20D41D1D42');
+    }
+}

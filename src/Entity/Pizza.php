@@ -7,6 +7,9 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\JoinColumns;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Table(name="pizza")
@@ -31,8 +34,10 @@ class Pizza
     /**
      * @var Collection
      * @ORM\ManyToMany(targetEntity="App\Entity\IngredientPizza")
-     * 
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinTable(name="pizza_ingredient_pizza" ,
+     *      joinColumns={@JoinColumn(name="pizza_id", referencedColumnName="id_pizza")},
+     *      inverseJoinColumns={@JoinColumn(name="ingredient_pizza_id", referencedColumnName="id_ingredient_pizza", unique=false)}
+     * )
      */
     private Collection $quantiteIngredients;
 
