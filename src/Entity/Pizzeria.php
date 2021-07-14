@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -158,7 +158,7 @@ class Pizzeria
     /**
      * @return Collection
      */
-    public function getPizzas() :Collection
+    public function getPizzas(): Collection
     {
         return $this->pizzas;
     }
@@ -185,7 +185,7 @@ class Pizzeria
     /**
      * @return Collection
      */
-    public function getPizzaiolos() :Collection
+    public function getPizzaiolos(): Collection
     {
         return $this->pizzaiolos;
     }
