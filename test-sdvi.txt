@@ -1,0 +1,16 @@
+-- ETAPE 1 --
+
+- Dépendances PHP : OK
+- Dépendances JS : OK
+- Mise en place fichiers JS/CSS : OK
+- Connexion BDD : OK
+- Init BDD : OK
+
+
+-- ETAPE 2 --
+
+- Bi OneToMany (pizzeria <-> pizzaiolo) : OK --
+- ManyToMany (pizzeria->pizza) : OK --
+- OneToMany (pizza->ingredients) : OK 
+
+-- ETAPE 3 --

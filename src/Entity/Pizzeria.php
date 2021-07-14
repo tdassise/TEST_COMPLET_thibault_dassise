@@ -44,6 +44,7 @@ class Pizzeria
     /**
      * @var Collection
      * @ORM\ManyToMany(targetEntity="App\Entity\Pizza")
+     * 
      * @ORM\JoinColumn(nullable=false)
      */
     private Collection $pizzas;
