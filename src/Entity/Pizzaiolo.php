@@ -49,7 +49,7 @@ class Pizzaiolo
      *     referencedColumnName="id_pizzeria"
      * )
      */
-    private Pizzeria $employeur;
+    private $employeur;
 
     /**
      * @return int
