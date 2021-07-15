@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Pizza;
 use App\Service\Dao\PizzaDao;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,11 +39,22 @@ class PizzaController extends AbstractController
      * )
      *
      * @param int $pizzaId
+     * @param PizzaDao $pizzaDao
      *
      * @return Response
      */
-    public function detailAction(int $pizzaId): Response
+    public function detailAction(int $pizzaId, PizzaDao $pizzaDao): Response
     {
-        return $this->render("Pizza/detail.html.twig");
+        // Récupération de l'id de la pizza 
+        $idPizza = $this->getDoctrine()->getRepository(Pizza::class)->find($pizzaId);
+
+        // Récupération du nom de la pizza
+        $nomPizza = $idPizza->getNom();
+
+        // Récupération des ingrédients de la pizza
+        $ingPizza = $pizzaDao->getDetailPizza($pizzaId);
+
+        // Affichage via le twig
+        return $this->render("Pizza/detail.html.twig", ["nomPizza" => $nomPizza, "ingPizza" => $ingPizza]);
     }
 }

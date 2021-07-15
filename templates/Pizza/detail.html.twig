@@ -1,9 +1,14 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{% endblock %}
+{% block title %}Détails des ingrédients{% endblock %}
 
-{% block titrePage %}{% endblock %}
+{% block titrePage %}
+    {{ nomPizza }}
+{% endblock %}
 
 {% block body %}
-    Le détail de la pizza sélectionnée
+    Le détail de la pizza 
+    <br>
+    <br>
+    Ingrédients : {{ingPizza}}  
 {% endblock %}

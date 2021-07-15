@@ -11,6 +11,16 @@
 
 - Bi OneToMany (pizzeria <-> pizzaiolo) : OK --
 - ManyToMany (pizzeria->pizza) : OK --
-- OneToMany (pizza->ingredients) : OK 
+- OneToMany (pizza->ingredients) : OK --
 
 -- ETAPE 3 --
+
+
+
+
+
+
+
+
+
+
