@@ -25,6 +25,7 @@ class Pizza
      */
     private int $id;
 
+
     /**
      * @var string
      * @ORM\Column(name="nom", type="string", length=255, unique=true)
@@ -112,5 +113,10 @@ class Pizza
     public function getQuantiteIngredients(): Collection
     {
         return $this->quantiteIngredients;
+    }
+
+    public function __toString()
+    {
+        return $this->getNom();
     }
 }
