@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{% endblock %}
+
+{% block titrePage %}La pizza {{ pizza.nom }}{% endblock %}
+
+{% block body %}
+    <small>Ingrédients:</small>
+    {% for ip in pizza.ingredientPizzas %}
+        {{ ip.ingredient.nom }}
+        {% if not loop.last %}, {% endif %}
+    {% endfor %}
+
+    <small>Coût:</small>
+    {{ cout }}
+
+{% endblock %}
