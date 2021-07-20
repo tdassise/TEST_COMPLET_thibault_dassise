@@ -1,13 +1,13 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="nombre_ingredient_par_pizza")
+ * @ORM\Table(name="ingredientPizza")
  * @ORM\Entity(repositoryClass="App\Repository\IngredientPizzaRepository")
  */
 class IngredientPizza
@@ -39,6 +39,15 @@ class IngredientPizza
      * )
      */
     private Ingredient $ingredient;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Pizza::class, inversedBy="ingredientPizzas")
+     * @ORM\JoinColumn(
+     *     name="pizza_id",
+     *     referencedColumnName="id_pizza"
+     * )
+     */
+    private $pizza;
 
     /**
      * @param float $grammes
@@ -102,6 +111,18 @@ class IngredientPizza
     public function setIngredient(Ingredient $ingredient): IngredientPizza
     {
         $this->ingredient = $ingredient;
+
+        return $this;
+    }
+
+    public function getPizza(): ?Pizza
+    {
+        return $this->pizza;
+    }
+
+    public function setPizza(?Pizza $pizza): self
+    {
+        $this->pizza = $pizza;
 
         return $this;
     }

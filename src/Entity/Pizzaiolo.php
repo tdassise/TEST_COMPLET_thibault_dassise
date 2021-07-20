@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -49,7 +49,7 @@ class Pizzaiolo
      *     referencedColumnName="id_pizzeria"
      * )
      */
-    private $employeur;
+    private Pizzeria $employeur;
 
     /**
      * @return int

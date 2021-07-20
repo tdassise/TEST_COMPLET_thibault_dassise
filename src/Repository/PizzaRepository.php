@@ -1,11 +1,14 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Ingredient;
+use App\Entity\IngredientPizza;
 use App\Entity\Pizza;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -42,10 +45,24 @@ class PizzaRepository extends ServiceEntityRepository
             ->innerJoin("p.quantiteIngredients", "qte")
             ->innerJoin("qte.ingredient", "ing")
             ->where("p.id = :idPizza")
-            ->setParameter("idPizza", $pizzaId)
-        ;
+            ->setParameter("idPizza", $pizzaId);
 
         // exécution de la requête
         return $qb->getQuery()->getSingleResult();
+    }
+
+    /**
+     * @var $pizzaId: int id de la pizza
+     * @return Pizza|null|bool
+     */
+    public function getIngredients(int $pizzaId): Pizza
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->innerJoin(IngredientPizza::class, 'ip', Join::WITH, 'p.id = ip.pizza')
+            ->innerJoin(Ingredient::class, 'i', Join::WITH, 'i.id = ip.ingredient')
+            ->where('p.id = :pizzaId')
+            ->setParameter('pizzaId', $pizzaId);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

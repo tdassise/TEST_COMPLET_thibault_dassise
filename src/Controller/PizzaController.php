@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Controller;
 
-use App\Entity\Pizza;
-use App\Entity\Ingredient;
+use App\Repository\PizzaRepository;
 use App\Service\Dao\PizzaDao;
+use NumberFormatter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PizzaController extends AbstractController
 {
     /**
-     * @Route("/pizzas")
+     * @Route("/pizzas", name="app_pizza_liste")
      *
      * @param PizzaDao $pizzaDao
      *
@@ -40,22 +40,24 @@ class PizzaController extends AbstractController
      * )
      *
      * @param int $pizzaId
-     * @param PizzaDao $pizzaDao
      *
      * @return Response
      */
-    public function detailAction(int $pizzaId, PizzaDao $pizzaDao): Response
+    public function detailAction(
+        int $pizzaId,
+        PizzaRepository $pizzaRepository
+    ): Response
     {
-        // Récupération de l'id de la pizza 
-        $idPizza = $this->getDoctrine()->getRepository(Pizza::class)->find($pizzaId);
+        $pizza = $pizzaRepository->getIngredients($pizzaId);
+        if ($pizza) {
+            $cout = $pizza->getCout();
+            $currencyFormat = new NumberFormatter('fr_FR', NumberFormatter::CURRENCY);
 
-        // Récupération du nom de la pizza
-        $nomPizza = $idPizza->getNom();
-
-        // Récupération des ingrédients de la pizza
-        $ingPizza = $pizzaDao->getDetailPizza($pizzaId);
-
-        // Affichage via le twig
-        return $this->render("Pizza/detail.html.twig", ["nomPizza" => $nomPizza, "ingPizza" => $ingPizza]);
+            return $this->render("Pizza/detail.html.twig", [
+                'pizza' => $pizza,
+                'cout' => $currencyFormat->formatCurrency($cout, 'EUR'),
+            ]);
+        }
+        return $this->redirectToRoute("app_pizza_liste");
     }
 }

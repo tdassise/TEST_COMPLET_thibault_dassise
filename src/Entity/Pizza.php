@@ -7,9 +7,6 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinTable;
-use Doctrine\ORM\Mapping\JoinColumns;
-use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Table(name="pizza")
@@ -25,7 +22,6 @@ class Pizza
      */
     private int $id;
 
-
     /**
      * @var string
      * @ORM\Column(name="nom", type="string", length=255, unique=true)
@@ -34,13 +30,19 @@ class Pizza
 
     /**
      * @var Collection
-     * @ORM\ManyToMany(targetEntity="App\Entity\IngredientPizza")
-     * @ORM\JoinTable(name="pizza_ingredient_pizza" ,
-     *      joinColumns={@JoinColumn(name="pizza_id", referencedColumnName="id_pizza")},
-     *      inverseJoinColumns={@JoinColumn(name="ingredient_pizza_id", referencedColumnName="id_ingredient_pizza", unique=false)}
-     * )
      */
     private Collection $quantiteIngredients;
+
+    /**
+     * @ORM\OneToMany(targetEntity=IngredientPizza::class, mappedBy="pizza")
+     */
+    private $ingredientPizzas;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Pizzeria::class, inversedBy="pizzas")
+     * @ORM\JoinColumn(name="pizzeria_id", referencedColumnName="id_pizzeria")
+     */
+    private $pizzeria;
 
     /**
      * Constructor
@@ -48,6 +50,7 @@ class Pizza
     public function __construct()
     {
         $this->quantiteIngredients = new ArrayCollection();
+        $this->ingredientPizzas = new ArrayCollection();
     }
 
     /**
@@ -115,8 +118,38 @@ class Pizza
         return $this->quantiteIngredients;
     }
 
-    public function __toString()
+    /**
+     * @return Collection|IngredientPizza[]
+     */
+    public function getIngredientPizzas(): Collection
     {
-        return $this->getNom();
+        return $this->ingredientPizzas;
+    }
+
+    public function getPizzeria(): ?Pizzeria
+    {
+        return $this->pizzeria;
+    }
+
+    public function setPizzeria(?Pizzeria $pizzeria): self
+    {
+        $this->pizzeria = $pizzeria;
+
+        return $this;
+    }
+
+    public function getCout()
+    {
+        $cout = 0;
+        foreach ($this->getIngredientPizzas() as $ip) {
+            $cout += IngredientPizza::convertirGrammeEnKilo($ip->getQuantite()) * $ip->getIngredient()->getCout();
+        }
+        return $cout;
+    }
+
+    public function getPrix($margePizzeria)
+    {
+
+        return $this->getCout() * $margePizzeria;
     }
 }

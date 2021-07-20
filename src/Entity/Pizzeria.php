@@ -1,15 +1,12 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinTable;
-use Doctrine\ORM\Mapping\JoinColumns;
-use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Table(name="pizzeria")
@@ -46,31 +43,21 @@ class Pizzeria
 
     /**
      * @var Collection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Pizza")
-     * @ORM\JoinTable(name="pizzeria_pizza" ,
-     *      joinColumns={@JoinColumn(name="pizzeria_id", referencedColumnName="id_pizzeria")},
-     *      inverseJoinColumns={@JoinColumn(name="pizza_id", referencedColumnName="id_pizza", unique=false)}
-     * )
-     */
-    private Collection $pizzas;
-
-    /**
-     * @var Collection
-     * @ORM\OneToMany(
-     *      targetEntity="App\Entity\Pizzaiolo",
-     *      mappedBy="employeur"
-     * )
-     * @ORM\JoinColumn(nullable=true)
      */
     private Collection $pizzaiolos;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Pizza::class, mappedBy="pizzeria")
+     */
+    private $pizzas;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->pizzas = new ArrayCollection();
         $this->pizzaiolos = new ArrayCollection();
+        $this->pizzas = new ArrayCollection();
     }
 
     /**
@@ -150,33 +137,6 @@ class Pizzeria
     }
 
     /**
-     * @param Pizza $pizza
-     * @return Pizzeria
-     */
-    public function addPizza(Pizza $pizza): Pizzeria
-    {
-        $this->pizzas[] = $pizza;
-
-        return $this;
-    }
-
-    /**
-     * @param Pizza $pizza
-     */
-    public function removePizza(Pizza $pizza): void
-    {
-        $this->pizzas->removeElement($pizza);
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getPizzas(): Collection
-    {
-        return $this->pizzas;
-    }
-
-    /**
      * @param Pizzaiolo $pizzaiolo
      * @return Pizzeria
      */
@@ -198,8 +158,38 @@ class Pizzeria
     /**
      * @return Collection
      */
-    public function getPizzaiolos(): Collection
+    public function getPizzaiolos() :Collection
     {
         return $this->pizzaiolos;
+    }
+
+    /**
+     * @return Collection|Pizza[]
+     */
+    public function getPizzas(): Collection
+    {
+        return $this->pizzas;
+    }
+
+    public function addPizza(Pizza $pizza): self
+    {
+        if (!$this->pizzas->contains($pizza)) {
+            $this->pizzas[] = $pizza;
+            $pizza->setPizzeria($this);
+        }
+
+        return $this;
+    }
+
+    public function removePizza(Pizza $pizza): self
+    {
+        if ($this->pizzas->removeElement($pizza)) {
+            // set the owning side to null (unless already changed)
+            if ($pizza->getPizzeria() === $this) {
+                $pizza->setPizzeria(null);
+            }
+        }
+
+        return $this;
     }
 }
