@@ -1,1 +1,28 @@
 
+{% extends "base.html.twig" %}
+
+{% block title %}Les pizzas de {{ pizzeria.nom }}{% endblock %}
+
+{% block titrePage %}La carte de la pizzeria {{ pizzeria.nom }}{% endblock %}
+
+{% block body %}
+    Les pizzas : 
+    <br/>
+
+    <table>
+        <tr>
+            <th>Pizza</th>
+            <th>Prix</th>
+        </tr>
+
+        {% for cp in carte %}
+            <tr>
+                <td>{{ cp.nomPizza }}</td>
+                <td>{{ cp.prixPizza }}</td>
+            </tr>
+        {% endfor %}  
+            
+        </tr>
+    </table>
+
+{% endblock %}

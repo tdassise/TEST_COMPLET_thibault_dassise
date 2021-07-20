@@ -1,12 +1,16 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Repository;
 
 use App\Entity\Pizzeria;
+use App\Entity\Pizza;
+use App\Entity\IngredientPizza;
+use App\Entity\Ingredient;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * Class PizzeriaRepository
@@ -35,9 +39,15 @@ class PizzeriaRepository extends ServiceEntityRepository
      * @param int $pizzeriaId
      * @return Pizzeria
      */
-    public function findCartePizzeria($pizzeriaId): Pizzeria
+    public function findCartePizzeria($pizzeriaId): ?Pizzeria
     {
-        // TODO: implémenter la méthode pour trouver la carte d'une pizzéria
-        throw new \Exception("The method ".__METHOD__." isn't implemented");
+        $qb = $this->createQueryBuilder('cp');       // cp = carte pizzeria
+        $qb->innerJoin(Pizza::class, 'p', Join::WITH, 'cp.id = p.pizzeria')
+            ->innerJoin(IngredientPizza::class, 'ip', Join::WITH, 'cp.id = ip.pizza')
+            ->innerJoin(Ingredient::class, 'i', Join::WITH, 'i.id = ip.ingredient')
+            ->where('cp.id = :pizzeriaId')
+            ->setParameter('pizzeriaId', $pizzeriaId);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

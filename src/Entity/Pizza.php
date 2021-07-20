@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -145,5 +145,11 @@ class Pizza
             $cout += IngredientPizza::convertirGrammeEnKilo($ip->getQuantite()) * $ip->getIngredient()->getCout();
         }
         return $cout;
+    }
+
+    public function getPrix($margePizzeria)
+    {
+
+        return $this->getCout() * $margePizzeria;
     }
 }
